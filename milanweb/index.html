@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="css/reset.css" />
+        <link rel="stylesheet" href="css/milan.css" />
+        <script src="js/move.js" type="text/javascript"></script>
+        <script src="js/milan.js" type="text/javascript" charset="utf-8" async defer></script>
+        <script type="text/javascript">
+
+
+        window.onload = function () {
+            var container = document.getElementById('container');
+            var list = document.getElementById('list');
+            var buttons = document.getElementById('buttons').getElementsByTagName('span');
+            var prev = document.getElementById('prev');
+            var next = document.getElementById('next');
+            var index = 1;
+            var len = 4;
+            var animated = false;
+            var interval = 3000;
+            var timer;
+
+
+            function animate (offset) {
+                if (offset == 0) {
+                    return;
+                }
+                animated = true;
+                var time = 300;
+                var inteval = 10;
+                var speed = offset/(time/inteval);
+                var left = parseInt(list.style.left) + offset;
+
+                var go = function (){
+                    if ( (speed > 0 && parseInt(list.style.left) < left) || (speed < 0 && parseInt(list.style.left) > left)) {
+                        list.style.left = parseInt(list.style.left) + speed + 'px';
+                        setTimeout(go, inteval);
+                    }
+                    else {
+                        list.style.left = left + 'px';
+                        if(left>-200){
+                            list.style.left = -960 * len + 'px';
+                        }
+                        if(left<(-960 * len)) {
+                            list.style.left = '-960px';
+                        }
+                        animated = false;
+                    }
+                }
+                go();
+            }
+
+            function showButton() {
+                for (var i = 0; i < buttons.length ; i++) {
+                    if( buttons[i].className == 'on'){
+                        buttons[i].className = '';
+                        break;
+                    }
+                }
+                buttons[index - 1].className = 'on';
+            }
+
+            function play() {
+                timer = setTimeout(function () {
+                    next.onclick();
+                    play();
+                }, interval);
+            }
+            function stop() {
+                clearTimeout(timer);
+            }
+
+            next.onclick = function () {
+                if (animated) {
+                    return;
+                }
+                if (index == 4) {
+                    index = 1;
+                }
+                else {
+                    index += 1;
+                }
+                animate(-960);
+                showButton();
+            }
+            prev.onclick = function () {
+                if (animated) {
+                    return;
+                }
+                if (index == 1) {
+                    index = 4;
+                }
+                else {
+                    index -= 1;
+                }
+                animate(960);
+                showButton();
+            }
+
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].onclick = function () {
+                    if (animated) {
+                        return;
+                    }
+                    if(this.className == 'on') {
+                        return;
+                    }
+                    var myIndex = parseInt(this.getAttribute('index'));
+                    var offset = -960 * (myIndex - index);
+
+                    animate(offset);
+                    index = myIndex;
+                    showButton();
+                }
+            }
+
+            container.onmouseover = stop;
+            container.onmouseout = play;
+
+            play();
+
+        }
+
+        </script>
+    </head>
+    <body>
+        <div class="header">
+            <div class="main-wrapper">
+                <div class="logo"></div>
+                <p>AC米兰俱乐部官方网站</p>
+                <div class="login-wrap">
+                    <i></i>
+                    <span class="js-username"><a href="login.html">登录</a><span>|</span><a href="register.html">注册</a></span>
+                </div>
+                <div class="a-area">
+                    <a href="#" class="adidas"></a>
+                    <a href="#" class="emirates"></a>
+                </div>
+            </div>
+        </div>
+        <div class="nav">
+            <div class="main-wrapper">
+                <ul class="js-ul">
+                    <li class="js-li"><a href="#" class="active">首页</a></li>
+                    <li class="js-li"><a href="#">新闻</a></li>
+                    <li class="js-li"><a href="#">比赛中心</a></li>
+                    <li class="js-li"><a href="#">球队</a></li>
+                    <li class="js-li"><a href="#">俱乐部</a></li>
+                    <li class="js-li"><a href="#">米兰之家</a></li>
+                    <li class="js-li"><a href="#">探访米兰</a></li>
+                    <li class="js-li"><a href="#">商城</a></li>
+                    <li class="js-li"><a href="#">球迷社区</a></li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="main-wrapper">
+            <div class="slide-wrap" id="container">
+                <div id="list" class="slide-list" style="left:0px">
+                    <img src="image/milannews.png" alt="" />
+                    <img src="image/milannews2.png" alt="" />
+                    <img src="image/milannews3.png" alt="" />
+                    <img src="image/milannews4.png" alt="" />
+                    <img src="image/milannews.png" alt="" />
+                    <img src="image/milannews2.png" alt="" />
+                </div>
+                <div class="slide-dot" id="buttons">
+                    <span index="1"></span>
+                    <span index="2"></span>
+                    <span index="3"></span>
+                    <span index="4"></span>
+                </div>
+                <a href="javascript:;" class="slide-btn prev-btn" id="prev"></a>
+                <a href="javascript:;" class="slide-btn next-btn" id="next"></a>
+            </div>
+        </div>
+
+        <div class="main-news main-wrapper">
+            <img src="image/news_title.png" alt="新闻" width="119" />
+            <div class="news-directory">
+                <a href="#">
+                    <div class="news-big">
+                        <img src="image/milanclub.png" alt="milanweb" width="480" height="336" />
+                        <div class="big-title">注册AC米兰中文官网会员，赢全队签名球衣</div>
+                    </div>
+                </a>
+                <ul class="news-littles">
+                    <a href="#">
+                        <li><img src="image/news_little.png" width="150" height="100" alt="" />
+                            <div class="little-word">
+                                <div class="little-title">米兰体能训练</div>
+                                <div class="little-info">周六早晨过的米兰内罗训练场，队员们正在进行重重训练（题图：路易斯...</div>
+                            </div>
+                        </li>
+                    </a>
+                    <a href="#">
+                        <li><img src="image/news_little.png" width="150" height="100" alt="" />
+                            <div class="little-word">
+                                <div class="little-title">米兰体能训练</div>
+                                <div class="little-info">周六早晨过的米兰内罗训练场，队员们正在进行重重训练（题图：路易斯...</div>
+                            </div>
+                        </li>
+                    </a>
+                     <a href="#">
+                        <li><img src="image/news_little.png" width="150" height="100" alt="" />
+                            <div class="little-word">
+                                <div class="little-title">米兰体能训练</div>
+                                <div class="little-info">周六早晨过的米兰内罗训练场，队员们正在进行重重训练（题图：路易斯...</div>
+                            </div>
+                        </li>
+                    </a>
+                </ul>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="main-wrapper">
+                <div class="slide-wrap" id="container-shop">
+                    <div class="slide-list" id="shop-list">
+                        <img src="image/shop2.jpeg" alt="" />
+                        <img src="image/shop3.jpg" alt="" />
+                        <img src="image/shop2.jpeg" alt="" />
+                    </div>
+                    <div class="slide-dot" id="shop-buttons">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="footer">
+            <div class="sponsor-wrapper">
+                <div class="main-wrapper">
+                    <div class="qrcode-list">
+                        <div class="qrcode-item qrcode-item1"><div class="qrcode-con"><p>扫一扫关注AC米兰</p><p><i></i><span>官方微信</span></p><img src="image/qrcode1.png" alt="" /></div></div>
+                        <div class="qrcode-item qrcode-item2"><div class="qrcode-con"><p>扫一扫关注AC米兰</p><p><i></i><span>官方微博</span></p><img src="image/qrcode1.png" alt="" /></div></div>
+                        <div class="qrcode-item qrcode-item3"><div class="qrcode-con"><p>扫一扫关注AC米兰</p><p><i></i><span>官方优酷频道</span></p><img src="image/qrcode1.png" alt="" /></div></div>
+                    </div>
+                    <div class="main-sponsor">
+                        <a href="#"><img src="image/sponsor1.png" alt="" /></a>
+                        <a href="#"><img src="image/sponsor2.png" alt="" /></a>
+                        <a href="#"><img src="image/sponsor3.png" alt="" /></a>
+                    </div>
+                    <ul class="sponsor-list">
+                        <li>
+                            <a href=""><img src="image/sponsor4.png" alt="" class="first-item" /></a>
+                            <a href=""><img src="image/sponsor5.png" alt="" /></a>
+                            <a href=""><img src="image/sponsor6.png" alt="" /></a>
+                            <a href=""><img src="image/sponsor7.png" alt="" /></a>
+                            <a href=""><img src="image/sponsor8.png" alt="" /></a>
+
+                        </li>
+                        <li class="last-item">
+                            <a href=""><img src="image/sponsor9.png" alt="" class="first-item"/></a>
+                            <a href=""><img src="image/sponsor10.png" alt="" /></a>
+                            <a href=""><img src="image/sponsor11.png" alt="" /></a>
+                            <a href=""><img src="image/sponsor12.png" alt="" /></a>
+                            <a href=""><img src="image/sponsor13.png" alt="" /></a>
+                            <a href=""><img src="image/sponsor14.png" alt="" /></a><a href=""><img src="image/sponsor15.png" alt="" /></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>Copyright 2016 ACMilan &nbsp; EpsilonAlex</p>
+                <p>Powered by EpsilonALex</p>
+            </div>
+        </div>
+    </body>
+</html>
